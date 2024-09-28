@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from 'react'
 import './styles.css'
 
@@ -10,7 +11,6 @@ import ToDo from './components/ToDo'
 import Weather from './components/Weather'
 import ConfigMenu from './components/ConfigMenu'
 import { LocaleRouteNormalizer } from 'next/dist/server/future/normalizers/locale-route-normalizer'
-
 export default function App() {
   
   const DEFAULT_CONFIG = blankConfig.map((widget) => {
