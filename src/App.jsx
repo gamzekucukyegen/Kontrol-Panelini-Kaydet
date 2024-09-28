@@ -10,20 +10,31 @@ import Stocks from './components/Stocks'
 import ToDo from './components/ToDo'
 import Weather from './components/Weather'
 import ConfigMenu from './components/ConfigMenu'
-import { LocaleRouteNormalizer } from 'next/dist/server/future/normalizers/locale-route-normalizer'
+
 export default function App() {
-  
   const DEFAULT_CONFIG = blankConfig.map((widget) => {
     return { ...widget, positionData: { ...widget.positionData } }
   })
-  const saveConfig = localStorage.getItem('widgetConfig')
-  const [widgetConfig, setWidgetConfig] = useState(saveConfig ? JSON.parse(saveConfig) : DEFAULT_CONFIG)
+
+  const [widgetConfig, setWidgetConfig] = useState(DEFAULT_CONFIG)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saveConfig = localStorage.getItem('widgetConfig')
+      if (saveConfig) {
+        setWidgetConfig(JSON.parse(saveConfig))
+      }
+    }
+  }, [])
+
   const [saveRequested, setSaveRequested] = useState(false)
 
   function save() {
-    localStorage.setItem('widgetConfig',JSON.stringify(widgetConfig))
-    setSaveRequested(true) 
+    if (typeof window !== "undefined") {
+      localStorage.setItem('widgetConfig', JSON.stringify(widgetConfig))
+      setSaveRequested(true)
+    }
   }
+
   const widgetComponents = {
     Clock: <Clock />,
     News: <News />,
